@@ -1,11 +1,13 @@
+import pandas
+import os
+
 # Script para automatizar reconocimiento de que montos entraron, salieron y cuales cambiaron de tramo
 # Los tramos son de (0 a 6 - 7 a 12 - 13 a 18 - 19 a 24 - mayor a 25)
 
 # Este programa esta hecho con la finalidad de lograr velocidad y automatizacion a la hora de reconocer 
 # cambio de tramos de elementos AGRUPADOS
 
-import pandas
-import tkinter
+
 
 # Tabla que contiene la columna ingresos, egresos, ctingresos, ctegresos ----> ct: Cambio de tramo
 # Cada columna cuenta con un array que debe tener 5 espacios (Rangos)
@@ -124,8 +126,8 @@ def getTramos(row1, row2):
 # La hoja "Fin" contiene las filas con los datos agrupados del mes actual
 
 def processExcel(excel):
-    inicio = pandas.read_excel("Prueba.xlsx", sheet_name="Inicio", header=None)
-    fin = pandas.read_excel("Prueba.xlsx", sheet_name="Fin", header=None)
+    inicio = pandas.read_excel(excel, sheet_name="Inicio", header=None)
+    fin = pandas.read_excel(excel, sheet_name="Fin", header=None)
     rows = inicio.shape[0]
     tabla = Tabla()
     
@@ -142,6 +144,5 @@ def processExcel(excel):
                 table = getTramos(row1,row2)
                 tabla = sumarTablas(tabla, table)
     df = tabla.getPandasTable()
-    df.to_excel("Output.xlsx", sheet_name="Output")
-    
-processExcel("Prueba.xlsx")
+    return df
+
