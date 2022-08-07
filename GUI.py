@@ -14,6 +14,7 @@ ruta_mesan = StringVar()
 ruta_mesac = StringVar()
 df_tramos = pd.DataFrame()
 df_errores = pd.DataFrame()
+df_cambio = pd.DataFrame()
 
 def browse_files(var: StringVar):
     extension = (("Excel Files","*.xls*"),)
@@ -76,6 +77,8 @@ def process_ctp(mesanterior, mesactual, entradas:ttk.Treeview, salidas:ttk.Treev
         row = (cc.iloc[i][0], cc.iloc[i][1], cc.iloc[i][2], str(round(cc.iloc[i][3],2)))
         cambiocodigo.insert("", tk.END, values=row)
     
+    global df_cambio
+    df_cambio = procesado[6]
     ct = procesado[6]
     ct = ct[["Item", "Total Actual", "Rango Anterior", "Rango Actual"]]
     for i in range(len(ct["Item"].values)):
@@ -84,7 +87,7 @@ def process_ctp(mesanterior, mesactual, entradas:ttk.Treeview, salidas:ttk.Treev
     
     err = procesado[5]
     global df_errores
-    df_errores = err
+    df_errores = procesado[7]
     err = err[["Item", "Total Actual"]]
     for i in range(len(err["Item"].values)):
         row = (err.iloc[i][0], str(round(err.iloc[i][1],2)))
@@ -276,7 +279,8 @@ def open_ctp(root):
     
     cc.grid(row=8, column=1, columnspan=3,pady=10)
 
-    ttk.Label(window, text="Cambios de tramo:", font=("Arial",10, "bold")).grid(row=9, column=1,columnspan=3)
+    ttk.Label(window, text="Cambios de tramo:", font=("Arial",10, "bold")).grid(row=9, column=1,columnspan=2)
+    ttk.Button(window, text="Excel", command=lambda:save_df(df_cambio)).grid(row=9, column=2,columnspan=2,padx=10)
     ct = ttk.Treeview(window, height=4)
     ct["columns"] = ("Item", "Monto", "RangoAnt", "RangoAct")
     ct.column("#0", width=0, stretch=NO)

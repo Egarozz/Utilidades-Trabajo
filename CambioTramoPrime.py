@@ -128,10 +128,14 @@ def process_excel(ruta, mesanterior, mesactual):
 
     errores = merged[(merged["Rango_x"] == "Error") | (merged["Rango_y"] == "Error") ]
     errores = errores[~errores["Rango_y"].isnull()]
+    
     # Con esto se corrige el issue #1 basicamente colocamos los montos en sus respectivos rangos y colocando el mes, esto para 
     # ambos meses donde se esta comparando
-    errores = errores[["Item", "de 0 a 6 m_x", "de 7 a 12_x", "de 13 a 18_x", "de 19 a 24_x", "mayor a 24_x", "Mes_x","de 0 a 6 m_y", "de 7 a 12_y", "de 13 a 18_y", "de 19 a 24_y", "mayor a 24_y", "Mes_y"]]
-    errores.columns = ["Item", "0 a 6", "7 a 12", "13 a 18", "19 a 24", "> 24", "Mes nuevo", "0 a 6", "7 a 12", "13 a 18", "19 a 24","> 24", "Rango antiguo"]
+    errores_excel = errores[["Item", "de 0 a 6 m_x", "de 7 a 12_x", "de 13 a 18_x", "de 19 a 24_x", "mayor a 24_x", "Mes_x","de 0 a 6 m_y", "de 7 a 12_y", "de 13 a 18_y", "de 19 a 24_y", "mayor a 24_y", "Mes_y"]]
+    errores_excel.columns = ["Item", "0 a 6", "7 a 12", "13 a 18", "19 a 24", "> 24", "Mes nuevo", "0 a 6", "7 a 12", "13 a 18", "19 a 24","> 24", "Rango antiguo"]
+    # Se arregla el excel de errores para colocar en la tabla
+    errores = arreglar_merged(errores)
+    
     #Una vez recopilada la informacion se crea el diccionario para una vez asi crear el DataFrame final
     dic = {}
 
@@ -179,4 +183,4 @@ def process_excel(ruta, mesanterior, mesactual):
     dic["Camb. Tram. Egr."] = [round(ct1e,3), round(ct2e,3), round(ct3e,3), round(ct4e,3), 0]
     dic["TC"] = [round(tc1,3), round(tc2,3), round(tc3,3), round(tc4,3), round(tc5,3)]
     output = pd.DataFrame(dic)
-    return (output, entradas, salidas, diferencias, cambio_codigos, errores, cambios)
+    return (output, entradas, salidas, diferencias, cambio_codigos, errores, cambios, errores_excel)
