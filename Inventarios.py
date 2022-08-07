@@ -107,9 +107,9 @@ def get_esfuerzo_comercial(df_mant: pd.DataFrame, df_mact: pd.DataFrame):
     df_mact = procesar_tramos_semestral(df_mact)
 
     df_mant["Total"] = df_mant["2016"] +df_mant["2017"] +df_mant["2018"] +df_mant["2019"] +df_mant["2020"] +df_mant["2021"]
-    total_mant = df_mant["Total"].sum()
-
     df_mact["Total"] = df_mact["2016"] +df_mact["2017"] +df_mact["2018"] +df_mact["2019"] +df_mact["2020"] +df_mact["2021"]
+
+    total_mant = df_mant["Total"].sum()
     total_mact = df_mact["Total"].sum()
 
     esfuerzo_comercial = round(total_mant - total_mact,3)

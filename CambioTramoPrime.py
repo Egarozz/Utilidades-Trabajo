@@ -128,7 +128,10 @@ def process_excel(ruta, mesanterior, mesactual):
 
     errores = merged[(merged["Rango_x"] == "Error") | (merged["Rango_y"] == "Error") ]
     errores = errores[~errores["Rango_y"].isnull()]
-    errores = arreglar_merged(errores)
+    # Con esto se corrige el issue #1 basicamente colocamos los montos en sus respectivos rangos y colocando el mes, esto para 
+    # ambos meses donde se esta comparando
+    errores = errores[["Item", "de 0 a 6 m_x", "de 7 a 12_x", "de 13 a 18_x", "de 19 a 24_x", "mayor a 24_x", "Mes_x","de 0 a 6 m_y", "de 7 a 12_y", "de 13 a 18_y", "de 19 a 24_y", "mayor a 24_y", "Mes_y"]]
+    errores.columns = ["Item", "0 a 6", "7 a 12", "13 a 18", "19 a 24", "> 24", "Mes nuevo", "0 a 6", "7 a 12", "13 a 18", "19 a 24","> 24", "Rango antiguo"]
     #Una vez recopilada la informacion se crea el diccionario para una vez asi crear el DataFrame final
     dic = {}
 
